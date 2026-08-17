@@ -1,0 +1,49 @@
+## Visual Studio / .NET Core / Rider
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.csproj.user
+*.pubxml
+*.pubxml.user
+*.DotSettings.user
+
+# Build results
+[Bb]in/
+[Oo]bj/
+[LLEe]og/
+[Ll]ogs/
+[Tt]est[Rr]esults/
+
+# Dotnet artifact build output
+artifacts/
+load-results/
+
+# Visual Studio Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# JetBrains Rider
+.idea/
+
+# User-specific files
+*.rsuser
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Environment & Sensitive configs
+appsettings.Secrets.json
+appsettings.Local.json
+*.env
+!.env.example
+
+# Docker / Volume persistence (на случай локальных логов)
+docker_data/

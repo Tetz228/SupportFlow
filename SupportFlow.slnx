@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/docs/" />
+  
+  <Folder Name="/src/">
+    <Project Path="src/SupportFlow.Api/SupportFlow.Api.csproj" />
+  </Folder>
+  
+  <Folder Name="/src/Modules/">
+    <Project Path="src/Modules/SupportFlow.Modules.Identity/SupportFlow.Modules.Identity.csproj" />
+    <Project Path="src/Modules/SupportFlow.Modules.Organizations/SupportFlow.Modules.Organizations.csproj" />
+    <Project Path="src/Modules/SupportFlow.Modules.Tickets/SupportFlow.Modules.Tickets.csproj" />
+  </Folder>
+  
+  <Folder Name="/tests/">
+    <Project Path="tests/SupportFlow.IntegrationTests/SupportFlow.IntegrationTests.csproj" />
+  </Folder>
+</Solution>

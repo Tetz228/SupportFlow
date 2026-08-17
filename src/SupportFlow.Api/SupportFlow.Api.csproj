@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <ItemGroup>
+        <ProjectReference Include="..\Modules\SupportFlow.Modules.Identity\SupportFlow.Modules.Identity.csproj"/>
+        <ProjectReference Include="..\Modules\SupportFlow.Modules.Organizations\SupportFlow.Modules.Organizations.csproj"/>
+        <ProjectReference Include="..\Modules\SupportFlow.Modules.Tickets\SupportFlow.Modules.Tickets.csproj"/>
+    </ItemGroup>
+</Project>
