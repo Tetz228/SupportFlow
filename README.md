@@ -57,7 +57,8 @@ SupportFlow/
 │       ├── SupportFlow.Modules.Organizations/
 │       └── SupportFlow.Modules.Tickets/
 ├── tests/
-│   └── SupportFlow.IntegrationTests/
+│   ├── SupportFlow.IntegrationTests/
+│   └── SupportFlow.Modules.Organizations.UnitTests/
 ├── docs/
 ├── .editorconfig
 ├── .env.example
@@ -123,6 +124,18 @@ dotnet user-secrets set "ConnectionStrings:SupportFlow" "Host=127.0.0.1;Port=543
 
 Значения порта, базы, пользователя и пароля должны совпадать с локальным `.env`. Production-секреты не должны храниться через User Secrets.
 
+## Миграции базы данных
+
+Миграции принадлежат конкретным модулям. Для применения миграций модуля `Organizations` выполните из корня репозитория:
+
+```powershell
+dotnet ef database update --project .\src\Modules\SupportFlow.Modules.Organizations --startup-project .\src\SupportFlow.Api --context OrganizationsDbContext
+```
+
+Команда создаёт схему `organizations`, таблицы модуля и отдельную таблицу истории `organizations.__ef_migrations_history`.
+
+При первом применении Npgsql может записать в лог неудачный `SELECT` из ещё не созданной таблицы истории. Если выполнение продолжается и завершается сообщением `Done`, это ожидаемая первоначальная проверка, а не ошибка миграции.
+
 ## Запуск API
 
 Из корня репозитория:
@@ -167,6 +180,9 @@ dotnet test
 - подключены EF Core и провайдер Npgsql;
 - добавлен внутренний `OrganizationsDbContext` со схемой `organizations`;
 - модуль `Organizations` зарегистрирован в API через публичную точку входа;
-- версия `dotnet-ef` закреплена локальным tool manifest.
+- версия `dotnet-ef` закреплена локальным tool manifest;
+- добавлена доменная модель организации с валидацией имени и UUIDv7;
+- добавлены модульные тесты доменных правил организации;
+- настроен EF Core-маппинг и добавлена первая миграция модуля `Organizations`.
 
-Бизнес-функциональность ещё не реализована.
+HTTP-сценарии бизнес-функциональности ещё не реализованы.
