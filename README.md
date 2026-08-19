@@ -35,11 +35,13 @@ SupportFlow — учебное B2B web-приложение для приёма 
 - C# 14;
 - .NET 10;
 - ASP.NET Core 10;
+- PostgreSQL 18;
+- Docker Compose;
 - xUnit;
 - `WebApplicationFactory` для интеграционных тестов;
 - Central Package Management.
 
-Планируется добавить PostgreSQL, Entity Framework Core, Docker, OpenTelemetry и React с TypeScript.
+Планируется добавить Entity Framework Core, OpenTelemetry и React с TypeScript.
 
 ## Структура репозитория
 
@@ -53,6 +55,8 @@ SupportFlow/
 │       └── SupportFlow.Modules.Tickets/
 ├── tests/
 │   └── SupportFlow.IntegrationTests/
+├── .env.example
+├── compose.yaml
 ├── Directory.Build.props
 ├── Directory.Packages.props
 ├── global.json
@@ -62,9 +66,40 @@ SupportFlow/
 ## Требования
 
 - .NET SDK 10;
+- Docker Desktop с Docker Compose;
 - Git.
 
 Нужная версия SDK задана в `global.json`.
+
+## Локальный PostgreSQL
+
+Создайте локальный файл с переменными окружения из шаблона:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Замените значение `POSTGRES_PASSWORD` в `.env` на собственный локальный пароль. Файл `.env` игнорируется Git и не должен попадать в репозиторий.
+
+Запустите PostgreSQL:
+
+```powershell
+docker compose up -d
+```
+
+Проверьте состояние контейнера:
+
+```powershell
+docker compose ps
+```
+
+Остановить контейнер можно командой:
+
+```powershell
+docker compose down
+```
+
+Именованный Docker volume сохраняет данные между перезапусками и пересозданиями контейнера.
 
 ## Запуск API
 
@@ -103,6 +138,7 @@ dotnet test
 - версии NuGet-пакетов управляются централизованно;
 - созданы API и три модуля;
 - добавлен `/health`;
-- добавлен интеграционный тест health endpoint.
+- добавлен интеграционный тест health endpoint;
+- настроено локальное окружение PostgreSQL в Docker Compose.
 
 Бизнес-функциональность ещё не реализована.
