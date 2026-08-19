@@ -11,7 +11,12 @@ public static class OrganizationsModule
         ArgumentNullException.ThrowIfNull(services);
         ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
 
-        services.AddDbContext<OrganizationsDbContext>(options => options.UseNpgsql(connectionString));
+        services.AddDbContext<OrganizationsDbContext>(options =>
+            options.UseNpgsql(
+                connectionString,
+                npgsqlOptions => npgsqlOptions.MigrationsHistoryTable(
+                    "__ef_migrations_history",
+                    OrganizationsDbContext.SchemaName)));
 
         return services;
     }
