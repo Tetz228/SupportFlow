@@ -1,4 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
+    <PropertyGroup>
+        <UserSecretsId>16e1ca4e-5ca4-4e37-8d38-7c4684646ecc</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
     <ItemGroup>
         <ProjectReference Include="..\Modules\SupportFlow.Modules.Identity\SupportFlow.Modules.Identity.csproj"/>
         <ProjectReference Include="..\Modules\SupportFlow.Modules.Organizations\SupportFlow.Modules.Organizations.csproj"/>
