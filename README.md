@@ -28,7 +28,8 @@ SupportFlow — учебное B2B web-приложение для приёма 
 - [Обзор документации](docs/README.md);
 - [границы MVP](docs/product/mvp.md);
 - [модули и правила зависимостей](docs/architecture/modules.md);
-- [ADR-0001: использовать модульный монолит](docs/adr/0001-use-modular-monolith.md).
+- [ADR-0001: использовать модульный монолит](docs/adr/0001-use-modular-monolith.md);
+- [ADR-0002: разделить владение данными по модулям](docs/adr/0002-use-module-owned-dbcontexts.md).
 
 ## Технологии
 
@@ -36,12 +37,14 @@ SupportFlow — учебное B2B web-приложение для приёма 
 - .NET 10;
 - ASP.NET Core 10;
 - PostgreSQL 18;
+- Entity Framework Core 10;
+- Npgsql 10;
 - Docker Compose;
 - xUnit;
 - `WebApplicationFactory` для интеграционных тестов;
 - Central Package Management.
 
-Планируется добавить Entity Framework Core, OpenTelemetry и React с TypeScript.
+Планируется добавить OpenTelemetry и React с TypeScript.
 
 ## Структура репозитория
 
@@ -55,10 +58,13 @@ SupportFlow/
 │       └── SupportFlow.Modules.Tickets/
 ├── tests/
 │   └── SupportFlow.IntegrationTests/
+├── docs/
+├── .editorconfig
 ├── .env.example
 ├── compose.yaml
 ├── Directory.Build.props
 ├── Directory.Packages.props
+├── dotnet-tools.json
 ├── global.json
 └── SupportFlow.slnx
 ```
@@ -70,6 +76,12 @@ SupportFlow/
 - Git.
 
 Нужная версия SDK задана в `global.json`.
+
+Локальные .NET-инструменты, включая `dotnet-ef`, восстанавливаются командой:
+
+```powershell
+dotnet tool restore
+```
 
 ## Локальный PostgreSQL
 
@@ -101,6 +113,16 @@ docker compose down
 
 Именованный Docker volume сохраняет данные между перезапусками и пересозданиями контейнера.
 
+## Локальная строка подключения
+
+API получает строку подключения из стандартной секции .NET Configuration `ConnectionStrings`. Для локальной разработки пароль хранится через User Secrets вне репозитория:
+
+```powershell
+dotnet user-secrets set "ConnectionStrings:SupportFlow" "Host=127.0.0.1;Port=5432;Database=supportflow;Username=supportflow;Password=<локальный-пароль>" --project .\src\SupportFlow.Api\SupportFlow.Api.csproj
+```
+
+Значения порта, базы, пользователя и пароля должны совпадать с локальным `.env`. Production-секреты не должны храниться через User Secrets.
+
 ## Запуск API
 
 Из корня репозитория:
@@ -130,6 +152,8 @@ dotnet test
 
 Интеграционные тесты запускают API через in-memory `TestServer` и не требуют отдельного запущенного web-сервера.
 
+Тестовый host получает собственную фиктивную строку подключения и не зависит от User Secrets разработчика. Пока health endpoint не проверяет базу данных, соединение с PostgreSQL во время теста не открывается.
+
 ## Текущее состояние
 
 Реализован начальный каркас проекта:
@@ -139,6 +163,10 @@ dotnet test
 - созданы API и три модуля;
 - добавлен `/health`;
 - добавлен интеграционный тест health endpoint;
-- настроено локальное окружение PostgreSQL в Docker Compose.
+- настроено локальное окружение PostgreSQL в Docker Compose;
+- подключены EF Core и провайдер Npgsql;
+- добавлен внутренний `OrganizationsDbContext` со схемой `organizations`;
+- модуль `Organizations` зарегистрирован в API через публичную точку входа;
+- версия `dotnet-ef` закреплена локальным tool manifest.
 
 Бизнес-функциональность ещё не реализована.
