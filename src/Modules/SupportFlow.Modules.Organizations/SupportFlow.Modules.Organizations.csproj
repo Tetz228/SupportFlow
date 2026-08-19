@@ -5,4 +5,8 @@
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions"/>
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL"/>
     </ItemGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="SupportFlow.Modules.Organizations.UnitTests"/>
+    </ItemGroup>
 </Project>
