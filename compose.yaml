@@ -1,4 +1,4 @@
-﻿name: supportflow
+name: supportflow
 
 services:
   postgres:
