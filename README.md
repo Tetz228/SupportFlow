@@ -1,5 +1,7 @@
 # SupportFlow
 
+[![CI](https://github.com/Tetz228/SupportFlow/actions/workflows/ci.yml/badge.svg)](https://github.com/Tetz228/SupportFlow/actions/workflows/ci.yml)
+
 SupportFlow — учебное B2B web-приложение для приёма и обработки обращений клиентов. Цель проекта — пройти полный цикл разработки production-like приложения на современном .NET-стеке.
 
 ## Цели
@@ -40,6 +42,7 @@ SupportFlow — учебное B2B web-приложение для приёма 
 - Entity Framework Core 10;
 - Npgsql 10;
 - Docker Compose;
+- GitHub Actions;
 - xUnit;
 - `WebApplicationFactory` для интеграционных тестов;
 - Central Package Management.
@@ -183,6 +186,7 @@ dotnet test
 - версия `dotnet-ef` закреплена локальным tool manifest;
 - добавлена доменная модель организации с валидацией имени и UUIDv7;
 - добавлены модульные тесты доменных правил организации;
-- настроен EF Core-маппинг и добавлена первая миграция модуля `Organizations`.
+- настроен EF Core-маппинг и добавлена первая миграция модуля `Organizations`;
+- добавлена автоматическая проверка сборки и тестов в GitHub Actions.
 
 HTTP-сценарии бизнес-функциональности ещё не реализованы.
