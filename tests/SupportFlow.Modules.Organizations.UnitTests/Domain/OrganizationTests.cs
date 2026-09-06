@@ -81,4 +81,17 @@ public sealed class OrganizationTests
         // Assert
         Assert.Equal(7, organization.Id.Version);
     }
+
+    [Fact]
+    public void Create_WithNulCharacter_ThrowsArgumentException()
+    {
+        // Arrange
+        const string name = "Acme\0Corporation";
+
+        // Act
+        Action act = () => Organization.Create(name);
+
+        // Assert
+        Assert.Throws<ArgumentException>(act);
+    }
 }

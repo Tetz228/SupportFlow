@@ -11,6 +11,8 @@ internal sealed class CreateOrganizationRequestValidator : AbstractValidator<Cre
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
             .WithMessage("Organization name is required.")
+            .Must(name => !name!.Contains('\0'))
+            .WithMessage("Organization name cannot contain NUL characters.")
             .Must(name => name!.Trim().Length <= Organization.MaxNameLength)
             .WithMessage($"Organization name cannot exceed {Organization.MaxNameLength} characters.");
     }

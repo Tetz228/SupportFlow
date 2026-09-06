@@ -85,4 +85,20 @@ public sealed class CreateOrganizationRequestValidatorTests
         // Assert
         result.ShouldNotHaveValidationErrorFor(createOrganizationRequest => createOrganizationRequest.Name);
     }
+
+    [Fact]
+    public async Task ValidateAsync_WithNulCharacter_HasNulCharacterValidationError()
+    {
+        // Arrange
+        var request = new CreateOrganizationRequest("Acme\0Corporation");
+        var validator = new CreateOrganizationRequestValidator();
+
+        // Act
+        var result = await validator.TestValidateAsync(request);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(createOrganizationRequest => createOrganizationRequest.Name)
+            .WithErrorMessage("Organization name cannot contain NUL characters.")
+            .Only();
+    }
 }

@@ -48,8 +48,10 @@ public sealed class CreateOrganizationEndpointTests(PostgreSqlFixture postgreSql
         Assert.Equal(expectedName, organization.Name);
     }
 
-    [Fact]
-    public async Task Post_WithWhitespaceName_ReturnsValidationProblemAndDoesNotCreateOrganization()
+    [Theory]
+    [InlineData("      ")]
+    [InlineData("Acme\0Corporation")]
+    public async Task Post_WithInvalidName_ReturnsValidationProblemAndDoesNotCreateOrganization(string name)
     {
         // Arrange
         await using var applicationFactory = new SupportFlowApiFactory
@@ -62,7 +64,7 @@ public sealed class CreateOrganizationEndpointTests(PostgreSqlFixture postgreSql
         using var httpClient = applicationFactory.CreateClient();
 
         var organizationsCountBefore = await CountOrganizationsAsync(applicationFactory);
-        var request = new CreateOrganizationRequest("      ");
+        var request = new CreateOrganizationRequest(name);
 
         // Act
         using var response = await httpClient.PostAsJsonAsync("/api/organizations/", request);
