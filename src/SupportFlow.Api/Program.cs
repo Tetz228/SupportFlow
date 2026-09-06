@@ -10,6 +10,7 @@ builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
+app.MapOrganizationsModule();
 app.MapHealthChecks("/health");
 
 app.Run();

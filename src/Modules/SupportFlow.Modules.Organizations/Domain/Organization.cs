@@ -20,6 +20,13 @@ internal sealed class Organization
 
         var normalizedName = name.Trim();
 
+        if (normalizedName.Contains('\0'))
+        {
+            throw new ArgumentException(
+                "Organization name cannot contain NUL characters.",
+                nameof(name));
+        }
+
         if (normalizedName.Length > MaxNameLength)
         {
             throw new ArgumentException($"Organization name cannot exceed {MaxNameLength} characters.", nameof(name));
