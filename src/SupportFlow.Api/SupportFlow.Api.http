@@ -1,0 +1,17 @@
+@host = https://localhost:7112
+
+POST {{host}}/api/organizations/
+Content-Type: application/json
+
+{
+  "name": "  Acme  "
+}
+
+###
+
+POST {{host}}/api/organizations/
+Content-Type: application/json
+
+{
+  "name": "   "
+}
