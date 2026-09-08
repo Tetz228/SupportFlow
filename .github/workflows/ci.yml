@@ -40,5 +40,8 @@ jobs:
       - name: Build
         run: dotnet build SupportFlow.slnx --configuration Release --no-restore
 
-      - name: Test
-        run: dotnet test SupportFlow.slnx --configuration Release --no-build
+      - name: Run unit tests
+        run: dotnet test tests/SupportFlow.Modules.Organizations.UnitTests/SupportFlow.Modules.Organizations.UnitTests.csproj --configuration Release --no-build --no-restore
+
+      - name: Run integration tests
+        run: dotnet test tests/SupportFlow.IntegrationTests/SupportFlow.IntegrationTests.csproj --configuration Release --no-build --no-restore

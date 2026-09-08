@@ -5,19 +5,25 @@ using SupportFlow.Modules.Organizations.Infrastructure.Persistence;
 
 namespace SupportFlow.IntegrationTests;
 
+[Collection(PostgreSqlCollection.Name)]
 public sealed class CreateOrganizationEndpointTests(PostgreSqlFixture postgreSqlFixture)
-    : IClassFixture<PostgreSqlFixture>
+    : IAsyncLifetime
 {
+    public Task InitializeAsync()
+    {
+        return postgreSqlFixture.ResetDatabaseAsync();
+    }
+
+    public Task DisposeAsync()
+    {
+        return Task.CompletedTask;
+    }
+
     [Fact]
     public async Task Post_WithValidRequest_CreatesOrganization()
     {
         // Arrange
-        await using var applicationFactory = new SupportFlowApiFactory
-        {
-            ConnectionString = postgreSqlFixture.ConnectionString
-        };
-
-        await applicationFactory.MigrateDatabaseAsync();
+        var applicationFactory = postgreSqlFixture.ApplicationFactory;
 
         using var httpClient = applicationFactory.CreateClient();
 
@@ -41,8 +47,7 @@ public sealed class CreateOrganizationEndpointTests(PostgreSqlFixture postgreSql
 
         var dbContext = scope.ServiceProvider.GetRequiredService<OrganizationsDbContext>();
 
-        var organization = await dbContext.Organizations.SingleAsync(organization =>
-            organization.Id == responseContent.Id);
+        var organization = await dbContext.Organizations.SingleAsync();
 
         Assert.Equal(responseContent.Id, organization.Id);
         Assert.Equal(expectedName, organization.Name);
@@ -54,16 +59,10 @@ public sealed class CreateOrganizationEndpointTests(PostgreSqlFixture postgreSql
     public async Task Post_WithInvalidName_ReturnsValidationProblemAndDoesNotCreateOrganization(string name)
     {
         // Arrange
-        await using var applicationFactory = new SupportFlowApiFactory
-        {
-            ConnectionString = postgreSqlFixture.ConnectionString
-        };
-
-        await applicationFactory.MigrateDatabaseAsync();
+        var applicationFactory = postgreSqlFixture.ApplicationFactory;
 
         using var httpClient = applicationFactory.CreateClient();
 
-        var organizationsCountBefore = await CountOrganizationsAsync(applicationFactory);
         var request = new CreateOrganizationRequest(name);
 
         // Act
@@ -79,9 +78,9 @@ public sealed class CreateOrganizationEndpointTests(PostgreSqlFixture postgreSql
         Assert.Equal(StatusCodes.Status400BadRequest, problemDetails.Status);
         Assert.Contains(nameof(CreateOrganizationRequest.Name), problemDetails.Errors.Keys);
 
-        var organizationsCountAfter = await CountOrganizationsAsync(applicationFactory);
+        var organizationsCount = await CountOrganizationsAsync(applicationFactory);
 
-        Assert.Equal(organizationsCountBefore, organizationsCountAfter);
+        Assert.Equal(0, organizationsCount);
     }
 
     private static async Task<int> CountOrganizationsAsync(SupportFlowApiFactory applicationFactory)
