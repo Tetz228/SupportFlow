@@ -1,5 +1,10 @@
 @host = http://localhost:5185
 
+GET {{host}}/openapi/v1.json
+Accept: application/json
+
+###
+
 POST {{host}}/api/organizations/
 Content-Type: application/json
 
