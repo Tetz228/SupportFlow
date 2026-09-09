@@ -7,10 +7,12 @@ var connectionString = builder.Configuration.GetConnectionString("SupportFlow")
 
 builder.Services.AddOpenApi();
 builder.Services.AddOrganizationsModule(connectionString);
+builder.Services.AddProblemDetails();
 builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
+app.UseStatusCodePages();
 app.MapOrganizationsModule();
 
 if (app.Environment.IsDevelopment())
