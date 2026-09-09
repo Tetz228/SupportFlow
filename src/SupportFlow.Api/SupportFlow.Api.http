@@ -5,6 +5,11 @@ Accept: application/json
 
 ###
 
+GET {{host}}/api/unknown
+Accept: application/problem+json
+
+###
+
 POST {{host}}/api/organizations/
 Content-Type: application/json
 

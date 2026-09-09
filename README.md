@@ -31,6 +31,7 @@ SupportFlow — учебное B2B web-приложение для приёма 
 - [границы MVP](docs/product/mvp.md);
 - [план разработки и обучения](docs/product/roadmap.md);
 - [API модуля Organizations](docs/api/organizations.md);
+- [формат ошибок API](docs/api/problem-details.md);
 - [модули и правила зависимостей](docs/architecture/modules.md);
 - [ADR-0001: использовать модульный монолит](docs/adr/0001-use-modular-monolith.md);
 - [ADR-0002: разделить владение данными по модулям](docs/adr/0002-use-module-owned-dbcontexts.md);
@@ -168,6 +169,12 @@ http://localhost:5185/openapi/v1.json
 
 Документ формируется встроенным генератором ASP.NET Core из маршрутов, типов запросов и ответов, а также metadata endpoint’ов. В `Production` этот endpoint не регистрируется. Готовый запрос для просмотра документа добавлен в `src/SupportFlow.Api/SupportFlow.Api.http`.
 
+### Problem Details
+
+API использует Problem Details как общий машиночитаемый формат ошибок. Если routing или endpoint возвращает ошибочный HTTP-статус без тела, Status Code Pages формирует ответ `application/problem+json` через стандартный `IProblemDetailsService`.
+
+Например, неизвестный маршрут возвращает `404` с полями `type`, `title` и `status`. Validation Problem Details сохраняет дополнительный словарь ошибок по полям запроса. Неожиданные исключения будут подключены к этому формату отдельным следующим шагом.
+
 ## Сборка
 
 ```powershell
@@ -207,6 +214,8 @@ PostgreSQL-зависимые тесты входят в общую xUnit-кол
 
 `OpenApiEndpointTests` проверяет значимые части контракта создания организации в сгенерированном OpenAPI-документе и подтверждает, что endpoint документации недоступен в окружении `Production`. Эти тесты используют тестовый host ASP.NET Core, но не обращаются к PostgreSQL.
 
+`ProblemDetailsEndpointTests` проверяет, что неизвестный маршрут возвращает `404` в формате `application/problem+json` с обязательными полями Problem Details. Тест использует настоящий middleware pipeline и routing, но не обращается к PostgreSQL.
+
 ## Текущее состояние
 
 Реализован начальный каркас проекта:
@@ -233,6 +242,7 @@ PostgreSQL-зависимые тесты входят в общую xUnit-кол
 - добавлены интеграционные тесты успешного и неуспешного создания организации;
 - подключена встроенная генерация OpenAPI для окружения разработки;
 - добавлены contract-тесты OpenAPI-документа и его недоступности в production-окружении;
+- настроен общий формат Problem Details для HTTP-ошибок без тела;
 - добавлена автоматическая проверка сборки и тестов в GitHub Actions.
 
 Этап реалистичных интеграционных тестов завершён. Сейчас развивается общий HTTP-контур API; первым шагом подключена генерация OpenAPI из metadata Minimal API endpoint’ов.
