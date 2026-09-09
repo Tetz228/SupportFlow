@@ -12,6 +12,7 @@ builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
+app.UseExceptionHandler();
 app.UseStatusCodePages();
 app.MapOrganizationsModule();
 
