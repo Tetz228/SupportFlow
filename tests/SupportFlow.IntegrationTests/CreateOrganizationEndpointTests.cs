@@ -77,6 +77,7 @@ public sealed class CreateOrganizationEndpointTests(PostgreSqlFixture postgreSql
         Assert.NotNull(problemDetails);
         Assert.Equal(StatusCodes.Status400BadRequest, problemDetails.Status);
         Assert.Contains(nameof(CreateOrganizationRequest.Name), problemDetails.Errors.Keys);
+        ProblemDetailsAssertions.HasTraceId(problemDetails);
 
         var organizationsCount = await CountOrganizationsAsync(applicationFactory);
 

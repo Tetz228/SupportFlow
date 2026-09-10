@@ -35,6 +35,7 @@ public sealed class ProblemDetailsEndpointTests(SupportFlowApiFactory applicatio
         Assert.Equal(StatusCodes.Status404NotFound, problemDetails.Status);
         Assert.False(string.IsNullOrWhiteSpace(problemDetails.Title));
         Assert.False(string.IsNullOrWhiteSpace(problemDetails.Type));
+        ProblemDetailsAssertions.HasTraceId(problemDetails);
     }
 
     [Fact]
@@ -77,6 +78,7 @@ public sealed class ProblemDetailsEndpointTests(SupportFlowApiFactory applicatio
         Assert.Equal(StatusCodes.Status500InternalServerError, problemDetails.Status);
         Assert.False(string.IsNullOrWhiteSpace(problemDetails.Title));
         Assert.False(string.IsNullOrWhiteSpace(problemDetails.Type));
+        ProblemDetailsAssertions.HasTraceId(problemDetails);
         Assert.DoesNotContain(SensitiveExceptionMessage, responseContent, StringComparison.Ordinal);
         Assert.DoesNotContain(nameof(InvalidOperationException), responseContent, StringComparison.Ordinal);
     }
