@@ -10,7 +10,7 @@ Accept: application/problem+json
 
 ###
 
-POST {{host}}/api/organizations/
+POST {{host}}/api/organizations
 Content-Type: application/json
 
 {
@@ -19,7 +19,7 @@ Content-Type: application/json
 
 ###
 
-POST {{host}}/api/organizations/
+POST {{host}}/api/organizations
 Content-Type: application/json
 
 {

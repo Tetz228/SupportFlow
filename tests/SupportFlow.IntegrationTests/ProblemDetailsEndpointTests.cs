@@ -58,7 +58,7 @@ public sealed class ProblemDetailsEndpointTests(SupportFlowApiFactory applicatio
         });
 
         using var httpClient = failingApplicationFactory.CreateClient();
-        using var request = new HttpRequestMessage(HttpMethod.Post, "/api/organizations/");
+        using var request = new HttpRequestMessage(HttpMethod.Post, "/api/organizations");
         request.Content = JsonContent.Create(new CreateOrganizationRequest("Acme Corporation"));
         request.Headers.Accept.ParseAdd(MediaTypeNames.Application.ProblemJson);
 

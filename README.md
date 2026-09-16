@@ -30,6 +30,7 @@ SupportFlow — учебное B2B web-приложение для приёма 
 - [Обзор документации](docs/README.md);
 - [границы MVP](docs/product/mvp.md);
 - [план разработки и обучения](docs/product/roadmap.md);
+- [соглашения HTTP API](docs/api/conventions.md);
 - [API модуля Organizations](docs/api/organizations.md);
 - [формат ошибок API](docs/api/problem-details.md);
 - [модули и правила зависимостей](docs/architecture/modules.md);
