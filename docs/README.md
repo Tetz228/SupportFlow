@@ -28,6 +28,7 @@
 - [ADR-0001: использовать модульный монолит](adr/0001-use-modular-monolith.md).
 - [ADR-0002: разделить владение данными по модулям](adr/0002-use-module-owned-dbcontexts.md).
 - [ADR-0003: разрешить интеграционным тестам доступ к внутреннему контексту модуля](adr/0003-allow-test-access-to-module-persistence.md).
+- [ADR-0004: отложить явное версионирование HTTP API](adr/0004-defer-api-versioning.md).
 
 ## Правила ведения
 
