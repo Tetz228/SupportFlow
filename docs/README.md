@@ -11,6 +11,7 @@
 
 ### API
 
+- [Соглашения HTTP API](api/conventions.md) — правила именования маршрутов, endpoint’ов, OpenAPI operationId и контрактов.
 - [API модуля Organizations](api/organizations.md) — контракт создания организации, валидация и примеры ответов.
 - [Формат ошибок API](api/problem-details.md) — общая структура Problem Details, ошибки маршрутизации и валидации.
 

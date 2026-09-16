@@ -31,7 +31,7 @@ public sealed class CreateOrganizationEndpointTests(PostgreSqlFixture postgreSql
         var request = new CreateOrganizationRequest($"  {expectedName}  ");
 
         // Act
-        using var response = await httpClient.PostAsJsonAsync("/api/organizations/", request);
+        using var response = await httpClient.PostAsJsonAsync("/api/organizations", request);
 
         // Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -66,7 +66,7 @@ public sealed class CreateOrganizationEndpointTests(PostgreSqlFixture postgreSql
         var request = new CreateOrganizationRequest(name);
 
         // Act
-        using var response = await httpClient.PostAsJsonAsync("/api/organizations/", request);
+        using var response = await httpClient.PostAsJsonAsync("/api/organizations", request);
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);

@@ -5,7 +5,7 @@
 ## Создать организацию
 
 ```http
-POST /api/organizations/
+POST /api/organizations
 Content-Type: application/json
 ```
 
